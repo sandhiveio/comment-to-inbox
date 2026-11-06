@@ -1,0 +1,44 @@
+name: comment-to-inbox
+
+services:
+  app:
+    build: .
+    image: comment-to-inbox:local
+    environment:
+      CTI_CONFIG: /config/project.json
+      CTI_DATABASE: /data/inbox.sqlite
+    volumes:
+      - ./config/project.json:/config/project.json:ro
+      - app-data:/data
+
+  project-b:
+    profiles: ["project-b"]
+    image: comment-to-inbox:local
+    environment:
+      CTI_CONFIG: /config/project.json
+      CTI_DATABASE: /data/inbox.sqlite
+    volumes:
+      - ./config/project-b.json:/config/project.json:ro
+      - project-b-data:/data
+
+  test:
+    profiles: ["test"]
+    image: comment-to-inbox:local
+    command: ["pytest", "-q", "tests"]
+
+  local:
+    profiles: ["local"]
+    build: .
+    image: comment-to-inbox:local
+    command: ["python", "-m", "comment_to_inbox", "serve", "--adapter", "zernio"]
+    environment:
+      CTI_CONFIG: /config/local.json
+      CTI_DATABASE: /data/inbox.sqlite
+    volumes:
+      - ./config/local.json:/config/local.json:ro
+      - local-data:/data
+
+volumes:
+  app-data:
+  project-b-data:
+  local-data:

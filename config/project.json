@@ -1,0 +1,54 @@
+{
+  "account_id": "ig-demo-alpha",
+  "account_username": "demo",
+  "comment_allowlist": ["pricing", "test"],
+  "keyword_typo_escalation": false,
+  "blocklist": [
+    "stop",
+    "unsubscribe",
+    "do not message me",
+    "leave me alone"
+  ],
+  "escalation_list": [
+    "what do i need to do",
+    "what i need to do",
+    "did not receive",
+    "didn't receive",
+    "didn't get it",
+    "nothing arrived",
+    "operator",
+    "help",
+    "spam"
+  ],
+  "posts": [
+    {"id": "post-alpha-1", "url": "https://www.instagram.com/p/post-alpha-1/", "enabled": true},
+    {"id": "post-alpha-2", "url": "https://www.instagram.com/p/post-alpha-2/", "enabled": true}
+  ],
+  "notifications": {
+    "workflow": "operator-handoff",
+    "api_key": ""
+  },
+  "zernio_base_url": "https://zernio.com/api/v1",
+  "zernio_api_key": "",
+  "public_reply_variants": [
+    "Thanks for commenting. I sent you a message."
+  ],
+  "public_fallback_variants": [
+    "We couldn't message you. If you'd still like the details, please send us a DM."
+  ],
+  "email_wait_seconds": 604800,
+  "email_request_variants": [
+    "Reply with your email and I will send the link."
+  ],
+  "email_retry_variants": [
+    "I still need an email address in your reply."
+  ],
+  "link_url": "https://example.com/alpha-guide",
+  "link_dm_variants": [
+    "Here is the link: https://example.com/alpha-guide"
+  ],
+  "rate_limit_per_minute": 30,
+  "send_timeout_seconds": 5,
+  "retry_delay_seconds": 2,
+  "action_deadline_seconds": 604800
+}
