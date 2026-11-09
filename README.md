@@ -24,6 +24,17 @@ Three ways to run it:
 - **Optional fuzzy keyword match.** Added for cases where typos are common and would otherwise lose leads. A near miss is handed to an operator instead of being dropped silently. The option is off by default.
 - **Daily statistics.** The system collects and stores incremental counters for each day and can export them for review. That is needed to check stability.
 - **A bounded set of posts.** `pricing` and the other allowlist phrases apply only to posts that are explicitly enabled. There is no mode for every post, including future ones. The assignment can be read either way, and this is a deliberate limit on scope: posts are set explicitly, and `sync-posts` adds new ones. A search across the account's whole history would be the same pass with deduplication. The structure would barely change. What would still need design is when a post goes stale, a webhook for current posts, and a rule for which of them to monitor: words in the caption, or a model score.
+- **SQLite and the queue in one database.** For a single container, SQLite keeps startup simple and lets one transaction store the event, change the run state, and queue the next task. A separate broker is unnecessary at this volume.
+- **A fixed scenario.** The assignment describes one sequence of actions. Configurable keywords, texts, and the link cover its variants. A general engine is worth adding once branches and other scenarios appear.
+- **No second run for the same person.** Starting the sequence again would let someone trigger many similar DMs, collect the replies, and then report them. That raises the chance of a block, including one pushed by competitors, and it would not add a meaningful gain.
+- **Seven days of waiting.** That is the chosen window for how long the person's interest stays relevant. It also limits how long a stuck run can live. Re-asks do not extend it, so a conversation cannot stay open indefinitely.
+- **Three re-asks.** The person gets several chances to correct the reply, and then the conversation goes to an operator. Repeating the same request after that is more likely to annoy than to help.
+- **Stop commands and rule priority.** A dedicated command makes a refusal unambiguous. An unclear phrase is left for an operator to check. A refusal and a request for help take priority over continuing the automation.
+- **The operator closes the automatic scenario.** The question may already have been resolved in the manual conversation. Resuming automatically could repeat messages or cut into that conversation.
+- **STOP cancels a pending export.** After a refusal, the lead is of doubtful value. Losing a potential lead is more acceptable than the risk of unwanted contact.
+- **No retry when the outcome is unknown.** The message may already have been delivered before the API response was lost. Automatic retries stop, and the case is left for review, so a duplicate is not sent.
+- **Export and notifications run on their own.** They must not delay email collection or Instagram replies. Processing the saved queue on a schedule is simple to demonstrate and can be run again after a failure.
+- **UTC and conversion by the day the run started.** UTC gives one boundary for the day. Counting a lead on the day the run started ties it to the original interest, even when the email arrives later. While some of those waits are still open, the figure is preliminary.
 
 ### Running the three modes
 
